@@ -1,8 +1,6 @@
-package com.example.demo.entity;
+package com.example.demo.instrument.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,10 +10,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "instrument")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Insturment {
+public class InstrumentEntity {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
