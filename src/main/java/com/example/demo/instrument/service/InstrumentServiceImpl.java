@@ -4,6 +4,8 @@ import com.example.demo.instrument.entity.InstrumentEntity;
 import com.example.demo.instrument.repository.InstrumentRepository;
 import com.example.demo.market.entity.MarketEntity;
 import com.example.demo.market.service.MarketService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -18,8 +20,7 @@ import java.util.List;
 
 @Service
 public class InstrumentServiceImpl implements InstrumentService {
-
-
+    private static final Logger log = LoggerFactory.getLogger(InstrumentServiceImpl.class);
     @Autowired
     InstrumentRepository instrumentRepository;
 
@@ -73,9 +74,9 @@ public class InstrumentServiceImpl implements InstrumentService {
 
                     System.out.println(instrumentEntity.getId() + "is done");
 
-            }catch (Exception e){
-                throw  new RuntimeException(e.getMessage());
-            }
+                }catch (Exception e){
+                    log.error(e.getMessage());
+                }
 
             }
 
