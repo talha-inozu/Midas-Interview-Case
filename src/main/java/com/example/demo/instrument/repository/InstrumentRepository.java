@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface InstrumentRepository extends JpaRepository<InstrumentEntity,Integer>{
+public interface InstrumentRepository extends JpaRepository<InstrumentEntity,Long>{
 
     @Query("select i from InstrumentEntity i where i.symbol = ?1")
     InstrumentEntity findBySymbol(String symbol);
 
+    @Query("SELECT MAX(id) FROM InstrumentEntity")
+    Long findLastId();
 
 }

@@ -2,6 +2,7 @@ package com.example.demo.instrument.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,12 +11,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "instrument")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class InstrumentEntity {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String name;
 
@@ -23,6 +24,7 @@ public class InstrumentEntity {
 
     private String custom_name;
 
-    private String sanane;
+    private Long market_id;
+
 
 }

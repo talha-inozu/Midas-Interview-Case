@@ -30,17 +30,6 @@ public class MarketServiceImpl implements MarketService{
 
 
     @Override
-    public MarketEntity getById(Long id) {
-        return marketRepository.getById(id);
-    }
-
-    @Override
-    public MarketEntity getBySymbol(String symbol) {
-        return  marketRepository.findBySymbol(symbol);
-    }
-
-
-    @Override
     public ResponseEntity<List<MarketEntity>> syncMarket() {
         List<MarketEntity> response = new ArrayList<>();
         RestTemplate restTemplate = new RestTemplate();
@@ -55,15 +44,14 @@ public class MarketServiceImpl implements MarketService{
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
-                MarketEntity entity = marketRepository.findBySymbol(object.getString("acronym"));
+                MarketEntity entity = marketRepository.findByCode(object.getString("mic"));
                 if(entity != null){
-                    entity.setCode(object.getString("mic"));
                     entity.setSymbol(object.getString("acronym"));
                     entity.setName(object.getString("name"));
                     entity.setCountry(object.getString("country"));
                     entity.setWebsite(object.getString("website"));
-
                     response.add(marketRepository.save(entity));
+
                 }else{
                     response.add(marketRepository.save(
                             MarketEntity.builder().
@@ -88,5 +76,10 @@ public class MarketServiceImpl implements MarketService{
     @Override
     public ResponseEntity<List<MarketEntity>> getAllMarkets() {
        return ResponseEntity.ok(marketRepository.findAll());
+    }
+
+    @Override
+    public MarketEntity findByCode(String code) {
+        return marketRepository.findByCode(code);
     }
 }
