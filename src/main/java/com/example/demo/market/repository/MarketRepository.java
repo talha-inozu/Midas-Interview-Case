@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface MarketRepository extends JpaRepository<MarketEntity,Long> {
 
     @Query("select i from MarketEntity i where i.code = ?1")
-    MarketEntity findByCode(String code);
+    MarketEntity findMarketByCode(String code);
 
 }

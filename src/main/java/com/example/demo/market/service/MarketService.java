@@ -10,7 +10,7 @@ public interface MarketService {
 
     public ResponseEntity<List<MarketEntity>> syncMarket();
     public ResponseEntity<List<MarketEntity>> getAllMarkets();
-    public MarketEntity findByCode(String ccode);
+    public MarketEntity findMarketByCode(String ccode);
 
 
 }

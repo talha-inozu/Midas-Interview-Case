@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -28,13 +29,23 @@ public class InstrumentServiceImpl implements InstrumentService {
     MarketService marketService;
 
     @Override
-    public InstrumentEntity findBySymbol(String symbol) {
-        return instrumentRepository.findBySymbol(symbol);
+    public ResponseEntity<InstrumentEntity> findInstrumentBySymbol(String symbol) {
+        try {
+            return ResponseEntity.ok(instrumentRepository.findBySymbol(symbol));
+        }catch (Exception e){
+            log.error("ERROR at InstrumentService :" + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
     }
 
     @Override
-    public List<InstrumentEntity> getAllInstruments() {
-        return  instrumentRepository.findAll();
+    public ResponseEntity<List<InstrumentEntity>> getAllInstruments() {
+        try{
+            return ResponseEntity.ok(instrumentRepository.findAll());
+        }catch (Exception e){
+            log.error("ERROR at InstrumentService :" + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
     }
 
     @Override
@@ -43,47 +54,41 @@ public class InstrumentServiceImpl implements InstrumentService {
         List<InstrumentEntity> instrumentEntityList = instrumentRepository.findAll();
         RestTemplate restTemplate = new RestTemplate();
 
+        log.info("Sync Instruments started");
 
+        for (InstrumentEntity instrumentEntity : instrumentEntityList) {
 
-            for(InstrumentEntity instrumentEntity : instrumentEntityList){
+            try {
+                ResponseEntity<String> result = restTemplate.exchange("https://api.robinhood.com/instruments/?symbol=" + instrumentEntity.getSymbol(), HttpMethod.GET, null, String.class);
 
-                try {
-                    ResponseEntity<String> result = restTemplate.exchange("https://api.robinhood.com/instruments/?symbol="+instrumentEntity.getSymbol(), HttpMethod.GET, null, String.class);
+                JSONObject instrument = new JSONObject(result.getBody());
 
-                    JSONObject instrument = new JSONObject(result.getBody());
+                JSONArray results = instrument.getJSONArray("results");
 
-                    JSONArray results = instrument.getJSONArray("results");
+                if (results.length() > 0) {
+                    instrument = results.getJSONObject(0);
 
-                    if(results.length() > 0 ){
-                        instrument = results.getJSONObject(0);
+                    String marketString[] = instrument.getString("market").split("/");
+                    String marketCode = marketString[marketString.length - 1];
 
-                        String marketString[] = instrument.getString("market").split("/");
-                        String marketCode = marketString[marketString.length-1];
+                    MarketEntity marketEntity = marketService.findMarketByCode(marketCode);
 
-                        MarketEntity marketEntity = marketService.findByCode(marketCode);
+                    Long marketId = marketEntity != null ? marketEntity.getId() : -1;
 
-                        Long marketId = marketEntity  != null ? marketEntity.getId() : -1 ;
-
-                        instrumentEntity.setCustom_name(instrument.getString("simple_name"));
-                        instrumentEntity.setName(instrument.getString("name"));
-                        instrumentEntity.setMarket_id(marketId);
-                        response.add(instrumentRepository.save(instrumentEntity));
-                    }
-
-
-
-                    System.out.println(instrumentEntity.getId() + "is done");
-
-                }catch (Exception e){
-                    log.error(e.getMessage());
+                    instrumentEntity.setCustom_name(instrument.getString("simple_name"));
+                    instrumentEntity.setName(instrument.getString("name"));
+                    instrumentEntity.setMarket_id(marketId);
+                    response.add(instrumentRepository.save(instrumentEntity));
                 }
 
+            } catch (Exception e) {
+                log.error("ERROR at InstrumentService :" + e.getMessage());
             }
 
+        }
 
-
-
-        return  ResponseEntity.ok(response);
+        log.info("Sync Instruments completed");
+        return ResponseEntity.ok(response);
     }
 
 
