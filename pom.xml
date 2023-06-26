@@ -11,6 +11,7 @@
 	<groupId>com.midas</groupId>
 	<artifactId>case</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>case</name>
 	<description>Case Spring Boot project for midas </description>
 	<properties>
@@ -59,6 +60,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin.external.google</groupId>
+			<artifactId>android-json</artifactId>
+			<version>0.0.20131108.vaadin1</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

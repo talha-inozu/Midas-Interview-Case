@@ -4,11 +4,12 @@ import com.example.demo.instrument.entity.InstrumentEntity;
 import com.example.demo.instrument.repository.InstrumentRepository;
 import com.example.demo.market.entity.MarketEntity;
 import com.example.demo.market.service.MarketService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.json.JSONObject;
+import org.json.JSONArray;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +21,21 @@ import java.util.List;
 
 
 @Service
+@AllArgsConstructor
 public class InstrumentServiceImpl implements InstrumentService {
     private static final Logger log = LoggerFactory.getLogger(InstrumentServiceImpl.class);
     @Autowired
-    InstrumentRepository instrumentRepository;
+    private final InstrumentRepository instrumentRepository;
 
     @Autowired
-    MarketService marketService;
+    private final RestTemplate restTemplate;
+    @Autowired
+    private final MarketService marketService;
 
     @Override
     public ResponseEntity<InstrumentEntity> findInstrumentBySymbol(String symbol) {
         try {
-            return ResponseEntity.ok(instrumentRepository.findBySymbol(symbol));
+            return ResponseEntity.ok(instrumentRepository.findInstrumentBySymbol(symbol));
         }catch (Exception e){
             log.error("ERROR at InstrumentService :" + e.getMessage());
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
@@ -52,7 +56,6 @@ public class InstrumentServiceImpl implements InstrumentService {
     public ResponseEntity<List<InstrumentEntity>> syncInstruments() {
         List<InstrumentEntity> response = new ArrayList<>();
         List<InstrumentEntity> instrumentEntityList = instrumentRepository.findAll();
-        RestTemplate restTemplate = new RestTemplate();
 
         log.info("Sync Instruments started");
 

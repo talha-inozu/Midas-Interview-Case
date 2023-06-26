@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/insturments")
+@RequestMapping("/instruments")
 public class InstrumentController {
 
     @Autowired

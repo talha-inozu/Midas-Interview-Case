@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface InstrumentRepository extends JpaRepository<InstrumentEntity,Long>{
 
     @Query("select i from InstrumentEntity i where i.symbol = ?1")
-    InstrumentEntity findBySymbol(String symbol);
+    InstrumentEntity findInstrumentBySymbol(String symbol);
 
-    @Query("SELECT MAX(id) FROM InstrumentEntity")
-    Long findLastId();
 
 }

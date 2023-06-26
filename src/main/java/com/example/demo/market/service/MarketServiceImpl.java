@@ -1,13 +1,14 @@
 package com.example.demo.market.service;
 
-import com.example.demo.instrument.service.InstrumentServiceImpl;
+
 import com.example.demo.market.entity.MarketEntity;
 import com.example.demo.market.repository.MarketRepository;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.json.JSONObject;
+import org.json.JSONArray;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +18,18 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@AllArgsConstructor
 @Service
 public class MarketServiceImpl implements MarketService{
     private static final Logger log = LoggerFactory.getLogger(MarketServiceImpl.class);
     @Autowired
-    MarketRepository marketRepository;
-
-
+    private final MarketRepository marketRepository;
+    @Autowired
+    private final RestTemplate restTemplate;
     @Override
     public ResponseEntity<List<MarketEntity>> syncMarket() {
         List<MarketEntity> response = new ArrayList<>();
-        RestTemplate restTemplate = new RestTemplate();
         log.info("Sync Markets started");
         try{
 
