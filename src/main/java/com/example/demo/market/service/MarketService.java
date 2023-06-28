@@ -7,10 +7,7 @@ import java.util.List;
 
 public interface MarketService {
 
-
     public ResponseEntity<List<MarketEntity>> syncMarket();
-    public ResponseEntity<List<MarketEntity>> getAllMarkets();
     public MarketEntity findMarketByCode(String ccode);
-
 
 }

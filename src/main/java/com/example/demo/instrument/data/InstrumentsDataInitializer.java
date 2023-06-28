@@ -48,7 +48,7 @@ public class InstrumentsDataInitializer implements ApplicationRunner {
                 log.error("ERROR at InstrumentsDataInitializer : " + e.getMessage());
             }
 
-            log.info("Instruments data initialization is compalted");
+            log.info("Instruments data initialization is completed");
         }
     }
 }

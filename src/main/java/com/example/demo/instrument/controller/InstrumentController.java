@@ -5,10 +5,7 @@ import com.example.demo.instrument.service.InstrumentService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,8 +18,8 @@ public class InstrumentController {
     private final InstrumentService instrumentService;
 
 
-    @GetMapping("/{symbol}")
-    public ResponseEntity<InstrumentEntity> getInstrumentBySymbol(@PathVariable String symbol){
+    @GetMapping("/")
+    public ResponseEntity<InstrumentEntity> getInstrumentBySymbol(@RequestParam String symbol){
         return instrumentService.findInstrumentBySymbol(symbol);
     }
 
@@ -31,7 +28,7 @@ public class InstrumentController {
         return instrumentService.getAllInstruments();
     }
 
-    @GetMapping("/syncInstruments")
+    @GetMapping("/sync")
     public ResponseEntity<List<InstrumentEntity>> syncInstruments(){
         return instrumentService.syncInstruments();
     }

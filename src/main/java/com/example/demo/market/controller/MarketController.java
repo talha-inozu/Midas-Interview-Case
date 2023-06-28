@@ -19,13 +19,10 @@ public class MarketController {
     @Autowired
     private final MarketService marketService;
 
-    @GetMapping("/syncMarket")
+    @GetMapping("/sync")
     public ResponseEntity<List<MarketEntity>> syncMarket(){
         return  marketService.syncMarket();
     }
-    @GetMapping()
-    public ResponseEntity<List<MarketEntity>> getAllMarkets(){
-        return  marketService.getAllMarkets();
-    }
+
 
 }

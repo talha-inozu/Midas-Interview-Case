@@ -92,12 +92,6 @@ class MarketServiceImplTest {
     }
 
     @Test
-    void getAllMarkets() {
-        underTest.getAllMarkets();
-        verify(marketRepository).findAll();
-    }
-
-    @Test
     void findMarketByCode() {
         MarketEntity expectedEntity = MarketEntity.builder().id(1000L).code("TEST").build();
         when(marketRepository.findMarketByCode("TEST")).thenReturn(expectedEntity);

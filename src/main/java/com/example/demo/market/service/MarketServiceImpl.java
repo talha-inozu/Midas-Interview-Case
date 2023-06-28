@@ -78,16 +78,6 @@ public class MarketServiceImpl implements MarketService{
     }
 
     @Override
-    public ResponseEntity<List<MarketEntity>> getAllMarkets() {
-        try {
-            return ResponseEntity.ok(marketRepository.findAll());
-        }catch (Exception e){
-            log.error("ERROR at MarketService :" + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
-    }
-
-    @Override
     public MarketEntity findMarketByCode(String code) {
         try {
             return marketRepository.findMarketByCode(code);
