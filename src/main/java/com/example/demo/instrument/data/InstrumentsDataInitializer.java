@@ -28,6 +28,7 @@ public class InstrumentsDataInitializer implements ApplicationRunner {
     @Autowired
     private final ResourceLoader resourceLoader;
 
+    //use seed.sql for initial data if initial data doesnt exist
     @Override
     public void run(ApplicationArguments args) throws Exception {
         if(instrumentService.getAllInstruments().getBody().size()<1){
@@ -41,7 +42,7 @@ public class InstrumentsDataInitializer implements ApplicationRunner {
                     sqlStatements.append(line);
                     if (line.endsWith(";")) {
                         jdbcTemplate.execute(sqlStatements.toString());
-                        sqlStatements.setLength(0);
+                        sqlStatements.setLength(0); // reset StringBuilder for new statement
                     }
                 }
             }catch (Exception e){

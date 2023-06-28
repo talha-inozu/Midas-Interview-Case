@@ -52,6 +52,7 @@ public class InstrumentServiceImpl implements InstrumentService {
         }
     }
 
+    //update all instruments by executing request for each instrument
     @Override
     public ResponseEntity<List<InstrumentEntity>> syncInstruments() {
         List<InstrumentEntity> response = new ArrayList<>();
@@ -71,11 +72,13 @@ public class InstrumentServiceImpl implements InstrumentService {
                 if (results.length() > 0) {
                     instrument = results.getJSONObject(0);
 
+                    //split market url for define  market code
                     String marketString[] = instrument.getString("market").split("/");
                     String marketCode = marketString[marketString.length - 1];
 
                     MarketEntity marketEntity = marketService.findMarketByCode(marketCode);
 
+                    // -1 means market doesn't exist or not updated yet
                     Long marketId = marketEntity != null ? marketEntity.getId() : -1;
 
                     instrumentEntity.setCustom_name(instrument.getString("simple_name"));

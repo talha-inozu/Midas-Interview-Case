@@ -27,6 +27,8 @@ public class MarketServiceImpl implements MarketService{
     private final MarketRepository marketRepository;
     @Autowired
     private final RestTemplate restTemplate;
+
+    //update all markets by using robinhood api
     @Override
     public ResponseEntity<List<MarketEntity>> syncMarket() {
         List<MarketEntity> response = new ArrayList<>();
@@ -45,6 +47,7 @@ public class MarketServiceImpl implements MarketService{
                 try{
                     JSONObject marketJsonObject = marketArray.getJSONObject(i);
                     MarketEntity marketEntity = marketRepository.findMarketByCode(marketJsonObject.getString("mic"));
+                    //if market exists update else save to database
                     if (marketEntity != null) {
                         marketEntity.setSymbol(marketJsonObject.getString("acronym"));
                         marketEntity.setName(marketJsonObject.getString("name"));
