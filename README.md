@@ -41,5 +41,5 @@ Below is an example endpoint and a pattern.
 
 GET http://localhost:8080/instruments/?symbol=AAPL
 
-GET http://localhost:8080/instruments/?symbol={symbol}
+GET `http://localhost:8080/instruments/?symbol={symbol}`
 
