@@ -14,6 +14,7 @@ Below is the REST endpoint used to update the markets. As a result, it returns t
 
 GET http://localhost:8080/markets/sync
 
+
 ## Part II: Instrument Sync
 
 When the application is started, data for instruments is initialized with seed.sql. Afterwards, a request for each instrument symbol is sent to the robinhood endpoint below to update each instrument.
@@ -24,7 +25,10 @@ For the market_id's of the instruments, the market codes obtained with the parse
 
 Below is the REST endpoint used to update the instruments. As a result, it returns the updated instruments in a response entity.
 
+### Caution!!! When a request is sent to this endpoint, the response time varies between 1.5 minutes and 5 minutes, depending on the internet speed.
+
 GET http://localhost:8080/instruments/sync
+
 
 ## Part III: Instrument Retrieve
 
